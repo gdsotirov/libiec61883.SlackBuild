@@ -8,10 +8,10 @@
 
 NAME=libiec61883
 VERSION=1.1.0
-BUILD=1
+BUILD=2
 
 cd $TMP
-tar -zxvf $CWD/$NAME-$VERSION.tar.gz
+tar -zxvf $CWD/$NAME-$VERSION.tar.gz || exit 1
 SRC=$TMP/$NAME-$VERSION
 cd $SRC
 fix_source
@@ -24,14 +24,14 @@ CXXFLAGS=$SLKCFLAGS \
             --sysconfdir=/etc \
             --mandir=/usr/man \
             --enable-shared=yes \
-            --enable-static=no
+            --enable-static=no || exit 2
 
-make all || exit 1 
+make -j4 all || exit 3
 
 PKG="$TMP/package-$NAME"
 mkdir -p $PKG
 
-make DESTDIR=$PKG install
+make DESTDIR=$PKG install || exit 4
 
 bin_perms $PKG
 gzip_man $PKG
