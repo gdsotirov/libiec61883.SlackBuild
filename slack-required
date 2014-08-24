@@ -1,2 +1,2 @@
-glibc-solibs >= 2.13
-libraw1394 >= 2.0.9
+glibc-solibs >= 2.15
+libraw1394 >= 2.1.0
