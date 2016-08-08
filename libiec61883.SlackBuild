@@ -5,7 +5,7 @@
 # Visit SlackPack at http://sotirov-bg.net/slackpack/
 #
 
-. ../slack-package.conf
+. ../../slack-package.conf
 
 NAME=libiec61883
 VERSION=1.2.0
@@ -33,7 +33,7 @@ mkdir -p $PKG
 
 # Extract the source
 cd $TMP
-tar -xvf $CWD/$NAME-$VERSION.tar.gz || exit 1
+tar -xvf $CWD/$NAME-$VERSION.tar.?z* || exit 3
 cd $SRC fix_source
 
 # Configure
@@ -42,14 +42,15 @@ CXXFLAGS=$SLKCFLAGS \
 ./configure --build=$ARCH-slackware-linux \
             --host=$ARCH-slackware-linux \
             --prefix=/usr \
+            --libdir=/usr/lib${LIBDIRSUFFIX} \
             --sysconfdir=/etc \
             --mandir=/usr/man \
             --enable-shared=yes \
-            --enable-static=no || exit 2
+            --enable-static=no || exit 4
 
 # Build & install
-make -j4 all || exit 3
-make DESTDIR=$PKG install || exit 4
+make -j4 all || exit 5
+make DESTDIR=$PKG install || exit 6
 
 bin_perms $PKG
 ( cd $PKG; strip_bin; strip_lib )
